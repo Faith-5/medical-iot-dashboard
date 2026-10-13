@@ -39,8 +39,7 @@ import {
   FaThLarge,
   FaUserNurse,
   FaProcedures,
-  FaSignal,
-  FaShieldVirus,
+  FaCheckCircle,
 } from "react-icons/fa";
 
 import logo from "./static/medical_logo.jpg";
@@ -64,38 +63,33 @@ function Dashboard({ user }) {
 
   const [activeTab, setActiveTab] = useState("home");
 
-  const currentDate = new Date().toLocaleDateString(undefined, {
-    weekday: "short",
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-  const currentTime = new Date().toLocaleTimeString();
+  const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
-  // Clinical helper status evaluations
+  // Status evaluators
   const getHeartRateStatus = (bpm) => {
-    if (!bpm) return { label: "Awaiting", color: "text-slate-400 bg-slate-800" };
+    if (!bpm) return { label: "Awaiting", color: "text-slate-500 bg-slate-100 border-slate-200" };
     const num = Number(bpm);
-    if (num < 60) return { label: "Bradycardia", color: "text-amber-400 bg-amber-950/60 border-amber-600/30" };
-    if (num > 100) return { label: "Tachycardia", color: "text-rose-400 bg-rose-950/60 border-rose-600/30" };
-    return { label: "Normal Sinus", color: "text-emerald-400 bg-emerald-950/60 border-emerald-600/30" };
+    if (num < 60) return { label: "Low", color: "text-amber-700 bg-amber-50 border-amber-200" };
+    if (num > 100) return { label: "High", color: "text-rose-700 bg-rose-50 border-rose-200" };
+    return { label: "Normal", color: "text-emerald-700 bg-emerald-50 border-emerald-200" };
   };
 
   const getTempStatus = (temp) => {
-    if (!temp) return { label: "Awaiting", color: "text-slate-400 bg-slate-800" };
+    if (!temp) return { label: "Awaiting", color: "text-slate-500 bg-slate-100 border-slate-200" };
     const num = Number(temp);
-    if (num < 36.0) return { label: "Hypothermia Risk", color: "text-cyan-400 bg-cyan-950/60 border-cyan-600/30" };
-    if (num > 37.8) return { label: "Febrile State", color: "text-rose-400 bg-rose-950/60 border-rose-600/30" };
-    return { label: "Normothermic", color: "text-emerald-400 bg-emerald-950/60 border-emerald-600/30" };
+    if (num < 36.0) return { label: "Low", color: "text-sky-700 bg-sky-50 border-sky-200" };
+    if (num > 37.8) return { label: "Fever", color: "text-rose-700 bg-rose-50 border-rose-200" };
+    return { label: "Normal", color: "text-emerald-700 bg-emerald-50 border-emerald-200" };
   };
 
   const heartStatus = getHeartRateStatus(data?.heartbeat);
   const tempStatus = getTempStatus(data?.temperature);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen bg-gradient-to-b from-sky-50 via-sky-50/40 to-slate-100 text-slate-800 p-4 sm:p-6 lg:p-8 font-sans">
+      
       {/* HEADER / NAVIGATION BAR */}
-      <header className="flex flex-col lg:flex-row justify-between items-center bg-slate-900/90 border border-slate-800 backdrop-blur-xl px-6 py-4 rounded-2xl shadow-xl shadow-cyan-950/20 mb-6 gap-4">
+      <header className="flex flex-col lg:flex-row justify-between items-center bg-white/95 border border-sky-100 backdrop-blur-md px-5 py-3.5 rounded-2xl shadow-sm shadow-sky-100/50 mb-5 gap-4">
         
         {/* Brand & System Title */}
         <div className="flex items-center gap-3.5 w-full lg:w-auto justify-between lg:justify-start">
@@ -103,369 +97,329 @@ function Dashboard({ user }) {
             <img
               src={logo}
               alt="MediPulse Care"
-              className="w-11 h-11 rounded-xl object-cover border border-cyan-500/40 shadow-md shadow-cyan-500/20"
+              className="w-10 h-10 rounded-xl object-cover border border-sky-200 shadow-sm"
             />
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-xl font-bold tracking-tight text-white flex items-center gap-1.5">
-                  MediPulse <span className="text-cyan-400">Clinical Command</span>
+                <h1 className="text-lg font-bold tracking-tight text-slate-900 flex items-center gap-1.5">
+                  MediPulse <span className="text-sky-600">Care</span>
                 </h1>
-                <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wider bg-emerald-950/80 text-emerald-300 border border-emerald-500/30">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-                  LIVE STREAM
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  LIVE
                 </span>
               </div>
-              <p className="text-xs text-slate-400 flex items-center gap-2">
-                <span>ICU Biosensor Monitor</span>
-                <span className="text-slate-600">•</span>
-                <span className="text-slate-400">Bay 04 - Evelyn Reed</span>
+              <p className="text-xs text-slate-500">
+                Patient: <span className="font-semibold text-slate-700">Evelyn Reed</span> • ICU Bay 04
               </p>
             </div>
           </div>
-
-          <div className="lg:hidden flex items-center gap-1 text-emerald-400 text-xs">
-            <FaSignal className="animate-pulse" />
-          </div>
         </div>
 
-        {/* Tab Controls & Clinician Badges */}
+        {/* Tab Navigation & Badges */}
         <div className="flex flex-wrap items-center justify-between lg:justify-end gap-3 w-full lg:w-auto">
           {/* Navigation Tabs */}
-          <nav className="flex bg-slate-950/70 p-1 rounded-xl border border-slate-800 text-xs font-semibold">
+          <nav className="flex bg-sky-50/80 p-1 rounded-xl border border-sky-100 text-xs font-semibold">
             <button
               onClick={() => setActiveTab("home")}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg transition ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition ${
                 activeTab === "home"
-                  ? "bg-cyan-600 text-white shadow-md shadow-cyan-600/30"
-                  : "text-slate-400 hover:text-white"
+                  ? "bg-sky-600 text-white shadow-sm shadow-sky-600/25"
+                  : "text-slate-600 hover:text-sky-700 hover:bg-white/80"
               }`}
             >
               <FaThLarge className="text-xs" />
-              <span>Vitals Overview</span>
+              <span>Overview</span>
             </button>
 
             <button
               onClick={() => setActiveTab("charts")}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg transition ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition ${
                 activeTab === "charts"
-                  ? "bg-cyan-600 text-white shadow-md shadow-cyan-600/30"
-                  : "text-slate-400 hover:text-white"
+                  ? "bg-sky-600 text-white shadow-sm shadow-sky-600/25"
+                  : "text-slate-600 hover:text-sky-700 hover:bg-white/80"
               }`}
             >
               <FaChartLine className="text-xs" />
-              <span>Telemetry Trends</span>
+              <span>Trends</span>
             </button>
 
             <button
               onClick={() => setActiveTab("location")}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg transition ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition ${
                 activeTab === "location"
-                  ? "bg-cyan-600 text-white shadow-md shadow-cyan-600/30"
-                  : "text-slate-400 hover:text-white"
+                  ? "bg-sky-600 text-white shadow-sm shadow-sky-600/25"
+                  : "text-slate-600 hover:text-sky-700 hover:bg-white/80"
               }`}
             >
               <FaMapMarkerAlt className="text-xs" />
-              <span>Patient Geofence</span>
+              <span>Location</span>
             </button>
           </nav>
 
           {/* Clinician Badges */}
           <div className="hidden sm:flex items-center gap-2 text-xs">
-            <div className="flex items-center gap-1.5 bg-slate-950/80 border border-slate-800 px-3 py-1.5 rounded-xl text-slate-300">
-              <FaProcedures className="text-cyan-400" />
-              <span>Device: <strong className="text-cyan-300 font-mono">{user}</strong></span>
+            <div className="flex items-center gap-1.5 bg-sky-50/90 border border-sky-200/80 px-2.5 py-1.5 rounded-xl text-sky-900 font-medium">
+              <FaProcedures className="text-sky-600" />
+              <span>Tag: <strong className="font-mono text-sky-800">{user}</strong></span>
             </div>
-            <div className="flex items-center gap-1.5 bg-slate-950/80 border border-slate-800 px-3 py-1.5 rounded-xl text-slate-300">
-              <FaUserNurse className="text-emerald-400" />
-              <span>Dr. Marcus Vance, MD</span>
+            <div className="flex items-center gap-1.5 bg-white border border-slate-200 px-2.5 py-1.5 rounded-xl text-slate-700 font-medium shadow-2xs">
+              <FaUserNurse className="text-sky-600" />
+              <span>Dr. M. Vance</span>
             </div>
           </div>
         </div>
 
       </header>
 
-      {/* STATUS & TIMESTAMP BAR */}
-      <div className="flex flex-col sm:flex-row items-center justify-between bg-slate-900/40 border border-slate-800/80 rounded-xl px-4 py-2.5 mb-6 text-xs text-slate-400 gap-2">
+      {/* QUICK STATUS BAR */}
+      <div className="flex items-center justify-between bg-white/80 border border-sky-100 rounded-xl px-4 py-2 mb-5 text-xs text-slate-500 shadow-2xs">
         <div className="flex items-center gap-2">
-          <span className="flex h-2 w-2 rounded-full bg-emerald-400"></span>
-          <span>Continuous Biosensor Polling: Active</span>
-          <span className="text-slate-600">•</span>
-          <span className="text-slate-300 font-medium">Protocol: Dual-Channel PPG & High-Precision Thermistor</span>
+          <span className="flex h-2 w-2 rounded-full bg-emerald-500"></span>
+          <span className="font-medium text-slate-700">Continuous Telemetry Active</span>
         </div>
-        <div className="text-slate-400 font-mono text-[11px]">
-          Last Telemetry Packet: <span className="text-cyan-300 font-semibold">{currentDate} {currentTime}</span>
+        <div className="text-slate-500 font-mono text-[11px]">
+          Last Sync: <span className="text-sky-700 font-semibold">{currentTime}</span>
         </div>
       </div>
 
-      {/* TAB 1: VITALS OVERVIEW */}
+      {/* TAB 1: OVERVIEW */}
       {activeTab === "home" && (
-        <div className="space-y-6">
-          {/* Main 6 Metric Tiles */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="space-y-5">
+          {/* 6 Vital Metric Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             
-            {/* Cardiac Pulse */}
-            <div className="bg-slate-900/80 border border-slate-800 hover:border-rose-500/40 rounded-2xl p-5 shadow-lg shadow-black/40 relative overflow-hidden transition group">
-              <div className="flex justify-between items-start">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-rose-950/60 border border-rose-500/30 flex items-center justify-center text-rose-400">
-                    <FaHeartbeat className="text-xl animate-heart-pulse" />
+            {/* 1. Heart Rate */}
+            <div className="bg-white border border-sky-100 hover:border-sky-300 rounded-2xl p-5 shadow-xs hover:shadow-md transition">
+              <div className="flex justify-between items-center mb-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-9 h-9 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center text-rose-500">
+                    <FaHeartbeat className="text-lg animate-heart-pulse" />
                   </div>
                   <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">Heart Rate</h3>
-                    <p className="text-[11px] text-slate-500">ECG Biosensor Channel</p>
+                    <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Heart Rate</h3>
                   </div>
                 </div>
-                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${heartStatus.color}`}>
+                <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${heartStatus.color}`}>
                   {heartStatus.label}
                 </span>
               </div>
-              <div className="mt-4 flex items-baseline gap-2">
-                <span className="text-3xl font-extrabold text-white tracking-tight font-mono">
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-3xl font-extrabold text-slate-900 tracking-tight font-mono">
                   {data?.heartbeat ?? "—"}
                 </span>
-                <span className="text-sm font-semibold text-rose-400">bpm</span>
+                <span className="text-xs font-semibold text-rose-500">bpm</span>
               </div>
-              <div className="mt-3 pt-3 border-t border-slate-800/80 flex justify-between text-[11px] text-slate-400">
-                <span>Target Range: 60 - 100 bpm</span>
-                <span className="text-emerald-400 font-medium">Continuous</span>
+              <div className="mt-3 pt-2.5 border-t border-slate-100 flex justify-between text-[11px] text-slate-400">
+                <span>Normal Range</span>
+                <span className="text-slate-600 font-medium">60 – 100 bpm</span>
               </div>
             </div>
 
-            {/* Blood Volume Pulse */}
-            <div className="bg-slate-900/80 border border-slate-800 hover:border-cyan-500/40 rounded-2xl p-5 shadow-lg shadow-black/40 relative overflow-hidden transition group">
-              <div className="flex justify-between items-start">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-cyan-950/60 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
-                    <FaTint className="text-xl" />
+            {/* 2. Blood Volume Pulse */}
+            <div className="bg-white border border-sky-100 hover:border-sky-300 rounded-2xl p-5 shadow-xs hover:shadow-md transition">
+              <div className="flex justify-between items-center mb-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-9 h-9 rounded-xl bg-sky-50 border border-sky-100 flex items-center justify-center text-sky-600">
+                    <FaTint className="text-lg" />
                   </div>
                   <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">Blood Volume Pulse</h3>
-                    <p className="text-[11px] text-slate-500">Photoplethysmogram (BVP)</p>
+                    <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Blood Pulse</h3>
                   </div>
                 </div>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full border text-cyan-400 bg-cyan-950/60 border-cyan-500/30">
-                  Perfusion Index
+                <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full border text-sky-700 bg-sky-50 border-sky-200">
+                  Perfusion
                 </span>
               </div>
-              <div className="mt-4 flex items-baseline gap-2">
-                <span className="text-3xl font-extrabold text-white tracking-tight font-mono">
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-3xl font-extrabold text-slate-900 tracking-tight font-mono">
                   {data?.bloodVolumePulse ?? "—"}
                 </span>
-                <span className="text-sm font-semibold text-cyan-400">%</span>
+                <span className="text-xs font-semibold text-sky-600">%</span>
               </div>
-              <div className="mt-3 pt-3 border-t border-slate-800/80 flex justify-between text-[11px] text-slate-400">
-                <span>Vascular Amplitude</span>
-                <span className="text-cyan-300 font-medium">Optimal Waveform</span>
+              <div className="mt-3 pt-2.5 border-t border-slate-100 flex justify-between text-[11px] text-slate-400">
+                <span>Signal Strength</span>
+                <span className="text-sky-700 font-medium">Optimal</span>
               </div>
             </div>
 
-            {/* Body Temperature */}
-            <div className="bg-slate-900/80 border border-slate-800 hover:border-emerald-500/40 rounded-2xl p-5 shadow-lg shadow-black/40 relative overflow-hidden transition group">
-              <div className="flex justify-between items-start">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-950/60 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
-                    <FaThermometerHalf className="text-xl" />
+            {/* 3. Body Temperature */}
+            <div className="bg-white border border-sky-100 hover:border-sky-300 rounded-2xl p-5 shadow-xs hover:shadow-md transition">
+              <div className="flex justify-between items-center mb-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-9 h-9 rounded-xl bg-sky-50 border border-sky-100 flex items-center justify-center text-sky-600">
+                    <FaThermometerHalf className="text-lg" />
                   </div>
                   <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">Core Body Temp</h3>
-                    <p className="text-[11px] text-slate-500">Thermal Probe</p>
+                    <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Body Temp</h3>
                   </div>
                 </div>
-                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${tempStatus.color}`}>
+                <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${tempStatus.color}`}>
                   {tempStatus.label}
                 </span>
               </div>
-              <div className="mt-4 flex items-baseline gap-2">
-                <span className="text-3xl font-extrabold text-white tracking-tight font-mono">
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-3xl font-extrabold text-slate-900 tracking-tight font-mono">
                   {data?.temperature ?? "—"}
                 </span>
-                <span className="text-sm font-semibold text-emerald-400">°C</span>
+                <span className="text-xs font-semibold text-sky-600">°C</span>
               </div>
-              <div className="mt-3 pt-3 border-t border-slate-800/80 flex justify-between text-[11px] text-slate-400">
-                <span>Normal: 36.5 - 37.5 °C</span>
-                <span className="text-emerald-400 font-medium">Regulated</span>
+              <div className="mt-3 pt-2.5 border-t border-slate-100 flex justify-between text-[11px] text-slate-400">
+                <span>Normal Range</span>
+                <span className="text-slate-600 font-medium">36.5 – 37.5 °C</span>
               </div>
             </div>
 
-            {/* Motion / Mobility */}
-            <div className="bg-slate-900/80 border border-slate-800 hover:border-blue-500/40 rounded-2xl p-5 shadow-lg shadow-black/40 relative overflow-hidden transition group">
-              <div className="flex justify-between items-start">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-blue-950/60 border border-blue-500/30 flex items-center justify-center text-blue-400">
-                    <FaWalking className="text-xl" />
+            {/* 4. Patient Motion */}
+            <div className="bg-white border border-sky-100 hover:border-sky-300 rounded-2xl p-5 shadow-xs hover:shadow-md transition">
+              <div className="flex justify-between items-center mb-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-9 h-9 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600">
+                    <FaWalking className="text-lg" />
                   </div>
                   <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">Patient Mobility</h3>
-                    <p className="text-[11px] text-slate-500">Inertial Sensor / IMU</p>
+                    <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Mobility</h3>
                   </div>
                 </div>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full border text-blue-300 bg-blue-950/60 border-blue-500/30">
-                  Bed / Posture
+                <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full border text-blue-700 bg-blue-50 border-blue-200">
+                  Posture
                 </span>
               </div>
-              <div className="mt-4 flex items-baseline gap-2">
-                <span className="text-2xl font-bold text-white tracking-tight">
-                  {data?.motion ?? "Awaiting Data"}
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-2xl font-bold text-slate-900 tracking-tight">
+                  {data?.motion ?? "Awaiting"}
                 </span>
               </div>
-              <div className="mt-3 pt-3 border-t border-slate-800/80 flex justify-between text-[11px] text-slate-400">
-                <span>Fall Risk: <strong className="text-emerald-400 font-semibold">Low</strong></span>
-                <span className="text-slate-400">Tremor Free</span>
+              <div className="mt-3 pt-2.5 border-t border-slate-100 flex justify-between text-[11px] text-slate-400">
+                <span>Fall Risk</span>
+                <span className="text-emerald-600 font-semibold">Low</span>
               </div>
             </div>
 
-            {/* Voice / Acoustic Distress */}
-            <div className="bg-slate-900/80 border border-slate-800 hover:border-purple-500/40 rounded-2xl p-5 shadow-lg shadow-black/40 relative overflow-hidden transition group">
-              <div className="flex justify-between items-start">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-purple-950/60 border border-purple-500/30 flex items-center justify-center text-purple-400">
-                    <FaMicrophone className="text-xl" />
+            {/* 5. Voice Telemetry */}
+            <div className="bg-white border border-sky-100 hover:border-sky-300 rounded-2xl p-5 shadow-xs hover:shadow-md transition">
+              <div className="flex justify-between items-center mb-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-9 h-9 rounded-xl bg-violet-50 border border-violet-100 flex items-center justify-center text-violet-600">
+                    <FaMicrophone className="text-lg" />
                   </div>
                   <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">Acoustic / Vocal</h3>
-                    <p className="text-[11px] text-slate-500">Audio Telemetry Monitor</p>
+                    <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Voice State</h3>
                   </div>
                 </div>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full border text-purple-300 bg-purple-950/60 border-purple-500/30">
-                  Acoustic Guard
+                <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full border text-violet-700 bg-violet-50 border-violet-200">
+                  Acoustic
                 </span>
               </div>
-              <div className="mt-4 flex items-baseline gap-2">
-                <span className="text-2xl font-bold text-white tracking-tight">
-                  {data?.voice ?? "Awaiting Data"}
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-2xl font-bold text-slate-900 tracking-tight">
+                  {data?.voice ?? "Awaiting"}
                 </span>
               </div>
-              <div className="mt-3 pt-3 border-t border-slate-800/80 flex justify-between text-[11px] text-slate-400">
-                <span>Vocal Distress Detection</span>
-                <span className="text-emerald-400 font-medium">Clear / Calm</span>
+              <div className="mt-3 pt-2.5 border-t border-slate-100 flex justify-between text-[11px] text-slate-400">
+                <span>Distress Level</span>
+                <span className="text-emerald-600 font-medium">Calm</span>
               </div>
             </div>
 
-            {/* Live GPS Telemetry */}
-            <div className="bg-slate-900/80 border border-slate-800 hover:border-amber-500/40 rounded-2xl p-5 shadow-lg shadow-black/40 relative overflow-hidden transition group">
-              <div className="flex justify-between items-start">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-amber-950/60 border border-amber-500/30 flex items-center justify-center text-amber-400">
-                    <FaMapMarkerAlt className="text-xl" />
+            {/* 6. Geopositioning */}
+            <div className="bg-white border border-sky-100 hover:border-sky-300 rounded-2xl p-5 shadow-xs hover:shadow-md transition">
+              <div className="flex justify-between items-center mb-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-9 h-9 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600">
+                    <FaMapMarkerAlt className="text-lg" />
                   </div>
                   <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">Geopositioning</h3>
-                    <p className="text-[11px] text-slate-500">Ambulatory Patient Tag</p>
+                    <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Location</h3>
                   </div>
                 </div>
                 <button
                   onClick={() => setActiveTab("location")}
-                  className="text-[10px] font-bold px-2 py-0.5 rounded-full border text-amber-300 bg-amber-950/60 border-amber-500/30 hover:bg-amber-900 transition"
+                  className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full border text-amber-700 bg-amber-50 border-amber-200 hover:bg-amber-100 transition"
                 >
-                  View Map →
+                  Map →
                 </button>
               </div>
-              <div className="mt-4 flex items-baseline gap-2">
-                <span className="text-lg sm:text-xl font-bold text-white tracking-tight font-mono truncate">
-                  {data?.gps ?? "Awaiting GPS Fix"}
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-lg font-bold text-slate-900 tracking-tight font-mono truncate">
+                  {data?.gps ?? "Awaiting GPS"}
                 </span>
               </div>
-              <div className="mt-3 pt-3 border-t border-slate-800/80 flex justify-between text-[11px] text-slate-400">
-                <span>Geofence: <strong className="text-emerald-400 font-semibold">Safe Ward Zone</strong></span>
-                <span className="text-slate-400 truncate max-w-[130px]">{place.split(",")[0]}</span>
+              <div className="mt-3 pt-2.5 border-t border-slate-100 flex justify-between text-[11px] text-slate-400">
+                <span>Geofence</span>
+                <span className="text-emerald-600 font-medium">Hospital Zone</span>
               </div>
             </div>
 
           </div>
 
-          {/* Quick Clinical Snapshot Card */}
-          <div className="bg-gradient-to-r from-slate-900 via-slate-900 to-cyan-950/40 border border-slate-800 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-cyan-950/80 border border-cyan-500/40 flex items-center justify-center text-cyan-400 text-2xl shadow-lg shadow-cyan-950/50">
-                <FaShieldVirus />
+          {/* Clean Quick Status Card */}
+          <div className="bg-white border border-sky-100 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-2xs">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 text-lg shrink-0">
+                <FaCheckCircle />
               </div>
-              <div>
-                <h3 className="text-sm font-bold text-white">Physician Clinical Impression</h3>
-                <p className="text-xs text-slate-400 mt-0.5">
-                  Vitals are tracking within anticipated surgical recovery parameters. No cardiac arrhythmia or critical threshold breaches observed.
-                </p>
-              </div>
+              <p className="text-xs text-slate-600">
+                All patient vitals are currently stable within baseline parameters.
+              </p>
             </div>
-            <div className="flex gap-2.5">
-              <button
-                onClick={() => setActiveTab("charts")}
-                className="px-4 py-2 rounded-xl text-xs font-semibold bg-cyan-600 hover:bg-cyan-500 text-white transition shadow-md shadow-cyan-600/30"
-              >
-                Inspect Historical Graphs
-              </button>
-            </div>
+            <button
+              onClick={() => setActiveTab("charts")}
+              className="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-sky-600 hover:bg-sky-500 text-white transition shadow-sm shadow-sky-600/25 shrink-0"
+            >
+              View History Trends →
+            </button>
           </div>
         </div>
       )}
 
-      {/* TAB 2: TELEMETRY TRENDS (CHARTS) */}
+      {/* TAB 2: TRENDS (CHARTS) */}
       {activeTab === "charts" && (
-        <div className="space-y-6">
-          {/* Heartbeat Trends */}
-          <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-xl">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 pb-3 border-b border-slate-800/80 gap-2">
-              <div>
-                <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                  <FaHeartbeat className="text-rose-400" />
-                  Cardiac Pulse Rhythm & Waveform Trends
-                </h2>
-                <p className="text-xs text-slate-400">
-                  Sliding window telemetry (BPM) sampled from continuous wireless biosensor
-                </p>
-              </div>
-              <div className="flex items-center gap-2 text-xs">
-                <span className="px-2.5 py-1 rounded-lg bg-rose-950/60 border border-rose-500/30 text-rose-300 font-mono font-bold">
-                  Current: {data?.heartbeat ?? "—"} bpm
-                </span>
-              </div>
+        <div className="space-y-5">
+          {/* Heart Rate Trends */}
+          <div className="bg-white border border-sky-100 rounded-2xl p-5 sm:p-6 shadow-sm">
+            <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+              <h2 className="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
+                <FaHeartbeat className="text-rose-500" />
+                Heart Rate Trend (BPM)
+              </h2>
+              <span className="px-2.5 py-1 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 font-mono text-xs font-bold">
+                {data?.heartbeat ?? "—"} bpm
+              </span>
             </div>
-            <div className="h-64 sm:h-72 md:h-80 w-full">
+            <div className="h-60 sm:h-72 w-full">
               <Line data={heartbeatData} options={heartbeatOptions} />
             </div>
           </div>
 
           {/* Blood Volume Pulse Trends */}
-          <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-xl">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 pb-3 border-b border-slate-800/80 gap-2">
-              <div>
-                <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                  <FaTint className="text-cyan-400" />
-                  Blood Volume Pulse (BVP) & Perfusion Amplitude
-                </h2>
-                <p className="text-xs text-slate-400">
-                  Optical photoplethysmogram tracking microvascular blood volume oscillations (%)
-                </p>
-              </div>
-              <div className="flex items-center gap-2 text-xs">
-                <span className="px-2.5 py-1 rounded-lg bg-cyan-950/60 border border-cyan-500/30 text-cyan-300 font-mono font-bold">
-                  Current: {data?.bloodVolumePulse ?? "—"} %
-                </span>
-              </div>
+          <div className="bg-white border border-sky-100 rounded-2xl p-5 sm:p-6 shadow-sm">
+            <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+              <h2 className="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
+                <FaTint className="text-sky-600" />
+                Blood Volume Pulse Trend (%)
+              </h2>
+              <span className="px-2.5 py-1 rounded-lg bg-sky-50 border border-sky-200 text-sky-800 font-mono text-xs font-bold">
+                {data?.bloodVolumePulse ?? "—"} %
+              </span>
             </div>
-            <div className="h-64 sm:h-72 md:h-80 w-full">
+            <div className="h-60 sm:h-72 w-full">
               <Line data={bloodPulseData} options={bloodPulseOptions} />
             </div>
           </div>
 
           {/* Body Temperature Trends */}
-          <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-xl">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 pb-3 border-b border-slate-800/80 gap-2">
-              <div>
-                <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                  <FaThermometerHalf className="text-emerald-400" />
-                  Core Thermal Homeostasis Trends
-                </h2>
-                <p className="text-xs text-slate-400">
-                  High-precision thermometric curve recorded in degrees Celsius (°C)
-                </p>
-              </div>
-              <div className="flex items-center gap-2 text-xs">
-                <span className="px-2.5 py-1 rounded-lg bg-emerald-950/60 border border-emerald-500/30 text-emerald-300 font-mono font-bold">
-                  Current: {data?.temperature ?? "—"} °C
-                </span>
-              </div>
+          <div className="bg-white border border-sky-100 rounded-2xl p-5 sm:p-6 shadow-sm">
+            <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+              <h2 className="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
+                <FaThermometerHalf className="text-sky-600" />
+                Core Body Temperature Trend (°C)
+              </h2>
+              <span className="px-2.5 py-1 rounded-lg bg-sky-50 border border-sky-200 text-sky-800 font-mono text-xs font-bold">
+                {data?.temperature ?? "—"} °C
+              </span>
             </div>
-            <div className="h-64 sm:h-72 md:h-80 w-full">
+            <div className="h-60 sm:h-72 w-full">
               <Line data={tempData} options={tempOptions} />
             </div>
           </div>
@@ -474,44 +428,39 @@ function Dashboard({ user }) {
 
       {/* TAB 3: LOCATION & GEOFENCE */}
       {activeTab === "location" && (
-        <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-xl">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 pb-4 border-b border-slate-800/80 gap-2">
-            <div>
-              <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                <FaMapMarkerAlt className="text-cyan-400" />
-                Patient Location & Facility Geofence Tracker
-              </h2>
-              <p className="text-xs text-slate-400">
-                Live GPS positioning for ambulatory patient safety and telemetry range verification
-              </p>
-            </div>
-            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-950/80 text-emerald-300 border border-emerald-500/30">
-              Within Hospital Boundary
+        <div className="bg-white border border-sky-100 rounded-2xl p-5 sm:p-6 shadow-sm space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
+              <FaMapMarkerAlt className="text-sky-600" />
+              Patient Geofence Tracker
+            </h2>
+            <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+              Within Hospital Perimeter
             </span>
           </div>
 
-          {/* Geolocation Coordinate Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-            <div className="bg-slate-950/80 border border-slate-800 p-4 rounded-xl text-center">
-              <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider">Latitude</p>
-              <p className="text-cyan-300 font-mono font-bold text-lg mt-1">{lat || "Pending"}</p>
+          {/* Coordinate Summary Pills */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="bg-sky-50/60 border border-sky-100 p-3 rounded-xl text-center">
+              <p className="text-slate-500 text-[11px] font-semibold uppercase tracking-wider">Latitude</p>
+              <p className="text-sky-900 font-mono font-bold text-base mt-0.5">{lat || "Pending"}</p>
             </div>
 
-            <div className="bg-slate-950/80 border border-slate-800 p-4 rounded-xl text-center">
-              <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider">Longitude</p>
-              <p className="text-cyan-300 font-mono font-bold text-lg mt-1">{lng || "Pending"}</p>
+            <div className="bg-sky-50/60 border border-sky-100 p-3 rounded-xl text-center">
+              <p className="text-slate-500 text-[11px] font-semibold uppercase tracking-wider">Longitude</p>
+              <p className="text-sky-900 font-mono font-bold text-base mt-0.5">{lng || "Pending"}</p>
             </div>
 
-            <div className="bg-slate-950/80 border border-slate-800 p-4 rounded-xl text-center">
-              <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider">Identified Facility Area</p>
-              <p className="text-slate-200 text-xs font-medium mt-1 truncate" title={place}>
+            <div className="bg-sky-50/60 border border-sky-100 p-3 rounded-xl text-center">
+              <p className="text-slate-500 text-[11px] font-semibold uppercase tracking-wider">Location</p>
+              <p className="text-slate-700 text-xs font-medium mt-1 truncate" title={place}>
                 {place || "Fetching location..."}
               </p>
             </div>
           </div>
 
           {/* OpenStreetMap Container */}
-          <div className="w-full h-80 sm:h-96 md:h-[450px] rounded-xl overflow-hidden border border-slate-800 shadow-inner">
+          <div className="w-full h-80 sm:h-96 rounded-xl overflow-hidden border border-sky-150 shadow-inner">
             <MapContainer
               center={[lat || 9.0765, lng || 7.3986]}
               zoom={14}
@@ -520,14 +469,14 @@ function Dashboard({ user }) {
             >
               <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
               />
               <Marker position={[lat || 9.0765, lng || 7.3986]}>
                 <Popup>
-                  <div className="text-slate-900 text-xs font-sans">
+                  <div className="text-slate-900 text-xs">
                     <strong>Patient: Evelyn Reed</strong><br />
-                    Device Tag: {user}<br />
-                    Location: {place}
+                    Tag: {user}<br />
+                    {place}
                   </div>
                 </Popup>
               </Marker>
@@ -535,6 +484,7 @@ function Dashboard({ user }) {
           </div>
         </div>
       )}
+
     </div>
   );
 }

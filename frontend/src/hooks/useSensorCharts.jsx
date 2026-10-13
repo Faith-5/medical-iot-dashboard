@@ -10,13 +10,13 @@ export default function useSensorCharts() {
       {
         label: "Core Body Temp (°C)",
         data: [],
-        borderColor: "#10b981",
-        backgroundColor: "rgba(16, 185, 129, 0.15)",
+        borderColor: "#0284c7",
+        backgroundColor: "rgba(2, 132, 199, 0.12)",
         fill: true,
         tension: 0.35,
         borderWidth: 2.5,
         pointRadius: 4,
-        pointBackgroundColor: "#10b981",
+        pointBackgroundColor: "#0284c7",
       },
     ],
   });
@@ -25,15 +25,15 @@ export default function useSensorCharts() {
     labels: [],
     datasets: [
       {
-        label: "Cardiac Pulse (bpm)",
+        label: "Heart Rate (BPM)",
         data: [],
-        borderColor: "#f43f5e",
-        backgroundColor: "rgba(244, 63, 94, 0.15)",
+        borderColor: "#e11d48",
+        backgroundColor: "rgba(225, 29, 72, 0.12)",
         fill: true,
         tension: 0.35,
         borderWidth: 2.5,
         pointRadius: 4,
-        pointBackgroundColor: "#f43f5e",
+        pointBackgroundColor: "#e11d48",
       },
     ],
   });
@@ -42,15 +42,15 @@ export default function useSensorCharts() {
     labels: [],
     datasets: [
       {
-        label: "Blood Volume Pulse / BVP (%)",
+        label: "Blood Volume Pulse (%)",
         data: [],
-        borderColor: "#06b6d4",
-        backgroundColor: "rgba(6, 182, 212, 0.15)",
+        borderColor: "#0ea5e9",
+        backgroundColor: "rgba(14, 165, 233, 0.12)",
         fill: true,
         tension: 0.35,
         borderWidth: 2.5,
         pointRadius: 4,
-        pointBackgroundColor: "#06b6d4",
+        pointBackgroundColor: "#0ea5e9",
       },
     ],
   });
@@ -113,19 +113,19 @@ export default function useSensorCharts() {
   const commonScales = {
     x: {
       grid: {
-        color: "rgba(51, 65, 85, 0.3)",
+        color: "rgba(224, 242, 254, 0.8)",
       },
       ticks: {
-        color: "#94a3b8",
+        color: "#64748b",
         font: { size: 11, family: "JetBrains Mono" },
       },
     },
     y: {
       grid: {
-        color: "rgba(51, 65, 85, 0.3)",
+        color: "rgba(224, 242, 254, 0.8)",
       },
       ticks: {
-        color: "#94a3b8",
+        color: "#64748b",
         font: { size: 11, family: "JetBrains Mono" },
       },
     },
@@ -137,18 +137,18 @@ export default function useSensorCharts() {
     animation: false,
     plugins: {
       legend: {
-        labels: { color: "#e2e8f0", font: { weight: "600", family: "Plus Jakarta Sans" } },
+        labels: { color: "#0f172a", font: { weight: "600", family: "Plus Jakarta Sans" } },
       },
     },
     scales: {
       ...commonScales,
       y: {
         ...commonScales.y,
-        title: { display: true, text: "Temperature (°C)", color: "#10b981", font: { weight: "bold" } },
+        title: { display: true, text: "Temperature (°C)", color: "#0284c7", font: { weight: "bold" } },
       },
       x: {
         ...commonScales.x,
-        title: { display: true, text: "Timestamp", color: "#64748b" },
+        title: { display: true, text: "Time", color: "#64748b" },
       },
     },
   }), []);
@@ -159,18 +159,18 @@ export default function useSensorCharts() {
     animation: false,
     plugins: {
       legend: {
-        labels: { color: "#e2e8f0", font: { weight: "600", family: "Plus Jakarta Sans" } },
+        labels: { color: "#0f172a", font: { weight: "600", family: "Plus Jakarta Sans" } },
       },
     },
     scales: {
       ...commonScales,
       y: {
         ...commonScales.y,
-        title: { display: true, text: "Heart Rate (BPM)", color: "#f43f5e", font: { weight: "bold" } },
+        title: { display: true, text: "Heart Rate (BPM)", color: "#e11d48", font: { weight: "bold" } },
       },
       x: {
         ...commonScales.x,
-        title: { display: true, text: "Timestamp", color: "#64748b" },
+        title: { display: true, text: "Time", color: "#64748b" },
       },
     },
   }), []);
@@ -181,18 +181,18 @@ export default function useSensorCharts() {
     animation: false,
     plugins: {
       legend: {
-        labels: { color: "#e2e8f0", font: { weight: "600", family: "Plus Jakarta Sans" } },
+        labels: { color: "#0f172a", font: { weight: "600", family: "Plus Jakarta Sans" } },
       },
     },
     scales: {
       ...commonScales,
       y: {
         ...commonScales.y,
-        title: { display: true, text: "Blood Volume Pulse (%)", color: "#06b6d4", font: { weight: "bold" } },
+        title: { display: true, text: "Blood Volume Pulse (%)", color: "#0284c7", font: { weight: "bold" } },
       },
       x: {
         ...commonScales.x,
-        title: { display: true, text: "Timestamp", color: "#64748b" },
+        title: { display: true, text: "Time", color: "#64748b" },
       },
     },
   }), []);

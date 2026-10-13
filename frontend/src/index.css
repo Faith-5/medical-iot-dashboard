@@ -1,21 +1,21 @@
 :root {
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  background-color: #030712;
-  color: #f1f5f9;
+  background-color: #f0f7ff;
+  color: #0f172a;
   overflow-x: hidden;
 }
 
 /* Custom glowing pulse for active vitals */
 @keyframes heartPulse {
   0% { transform: scale(1); opacity: 0.9; }
-  50% { transform: scale(1.18); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 1; }
   100% { transform: scale(1); opacity: 0.9; }
 }
 
@@ -24,7 +24,7 @@ body {
 }
 
 @keyframes wavePulse {
-  0%, 100% { opacity: 0.4; }
+  0%, 100% { opacity: 0.5; }
   50% { opacity: 1; }
 }
 
@@ -32,18 +32,18 @@ body {
   animation: wavePulse 2s infinite ease-in-out;
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar in clean sky blue */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #090d16;
+  background: #f0f7ff;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #bae6fd;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #7dd3fc;
 }

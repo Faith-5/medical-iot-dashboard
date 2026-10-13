@@ -14,12 +14,12 @@ function LoginPage({ onLogin }) {
     const trimmedId = id.trim();
 
     if (!trimmedId) {
-      setError("Please input the assigned Patient Biosensor or Clinician ID.");
+      setError("Please enter the Patient Biosensor ID.");
       return;
     }
 
     if (!allowedIds.includes(trimmedId)) {
-      setError("Unrecognized Biosensor ID. Please verify active clinic authorization.");
+      setError("Unrecognized ID. Try demo ID: 00:11:22");
       return;
     }
 
@@ -34,78 +34,73 @@ function LoginPage({ onLogin }) {
 
   return (
     <div
-      className="relative flex items-center justify-center min-h-screen bg-slate-950 bg-cover bg-center overflow-hidden px-4"
+      className="relative flex items-center justify-center min-h-screen bg-sky-50 bg-cover bg-center overflow-hidden px-4 font-sans"
       style={{ backgroundImage: `url(${bgImage})` }}
     >
-      {/* High-tech clinical ambient vignette and blur overlay */}
-      <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-[6px] bg-gradient-to-t from-slate-950 via-slate-950/70 to-slate-900/60"></div>
-
-      {/* Radial soft cyan glow behind card */}
-      <div className="absolute w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      {/* Light serene sky-blue clinical overlay */}
+      <div className="absolute inset-0 bg-sky-950/40 backdrop-blur-[5px] bg-gradient-to-t from-sky-950/70 via-sky-900/40 to-slate-900/40"></div>
 
       {/* Main Authentication Card */}
-      <div className="relative z-10 w-full max-w-md bg-slate-900/75 border border-cyan-500/30 backdrop-blur-xl rounded-3xl p-8 sm:p-9 shadow-2xl shadow-cyan-950/40">
+      <div className="relative z-10 w-full max-w-md bg-white/95 border border-sky-150 backdrop-blur-xl rounded-3xl p-7 sm:p-8 shadow-xl shadow-sky-950/20 text-slate-800">
         
-        {/* Top Clinical Header */}
-        <div className="flex flex-col items-center mb-7 text-center">
+        {/* Brand Header */}
+        <div className="flex flex-col items-center mb-6 text-center">
           <div className="relative mb-3">
             <img
               src={logo}
-              alt="MediPulse Clinical Systems"
-              className="w-20 h-20 rounded-2xl object-cover border border-cyan-400/40 shadow-lg shadow-cyan-500/20"
+              alt="MediPulse Care"
+              className="w-16 h-16 rounded-2xl object-cover border border-sky-200 shadow-sm"
             />
-            <span className="absolute -bottom-1 -right-1 flex h-4 w-4">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-4 w-4 bg-cyan-500 border-2 border-slate-900"></span>
+            <span className="absolute -bottom-1 -right-1 flex h-3.5 w-3.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-sky-500 border-2 border-white"></span>
             </span>
           </div>
 
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-950/70 border border-cyan-500/30 text-cyan-300 text-xs font-semibold uppercase tracking-wider mb-2">
-            <FaLaptopMedical className="text-cyan-400" />
-            <span>Clinical IoT Telemetry Portal</span>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-50 border border-sky-200 text-sky-800 text-[11px] font-semibold uppercase tracking-wider mb-2">
+            <FaLaptopMedical className="text-sky-600" />
+            <span>Clinical Telemetry Portal</span>
           </div>
 
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            MediPulse <span className="text-cyan-400">Care</span>
+          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+            MediPulse <span className="text-sky-600">Care</span>
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-xs">
-            Physician Gateway for Continuous Real-Time Biosensor Monitoring
+          <p className="text-xs text-slate-500 mt-1">
+            Real-time wireless biosensor monitoring
           </p>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <div className="flex justify-between items-center mb-2">
-              <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                <FaKey className="text-cyan-400" />
-                Biosensor / Device Tag ID
+            <div className="flex justify-between items-center mb-1.5">
+              <label className="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
+                <FaKey className="text-sky-600" />
+                Device Tag ID
               </label>
               <button
                 type="button"
                 onClick={handleQuickDemo}
-                className="text-[11px] text-cyan-400 hover:text-cyan-300 underline font-medium transition"
+                className="text-[11px] text-sky-600 hover:text-sky-800 underline font-medium transition"
               >
                 Auto-fill (00:11:22)
               </button>
             </div>
 
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="e.g. 00:11:22"
-                value={id}
-                onChange={(e) => {
-                  setId(e.target.value);
-                  if (error) setError("");
-                }}
-                className="w-full px-4 py-3.5 rounded-xl bg-slate-950/70 border border-slate-700/80 text-white placeholder-slate-500 font-mono text-sm focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition"
-              />
-            </div>
+            <input
+              type="text"
+              placeholder="e.g. 00:11:22"
+              value={id}
+              onChange={(e) => {
+                setId(e.target.value);
+                if (error) setError("");
+              }}
+              className="w-full px-4 py-3 rounded-xl bg-sky-50/50 border border-sky-200 text-slate-900 placeholder-slate-400 font-mono text-sm focus:outline-none focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-400/20 transition"
+            />
 
             {error && (
-              <div className="mt-2.5 p-2.5 rounded-lg bg-rose-950/60 border border-rose-500/40 text-rose-300 text-xs flex items-center gap-2">
-                <FaHeartbeat className="shrink-0 text-rose-400" />
+              <div className="mt-2 p-2.5 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
+                <FaHeartbeat className="shrink-0 text-rose-500" />
                 <span>{error}</span>
               </div>
             )}
@@ -113,20 +108,20 @@ function LoginPage({ onLogin }) {
 
           <button
             type="submit"
-            className="w-full py-3.5 px-4 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 active:scale-[0.99] shadow-lg shadow-cyan-600/25 transition duration-200 flex items-center justify-center gap-2"
+            className="w-full py-3 px-4 rounded-xl font-semibold text-sm text-white bg-sky-600 hover:bg-sky-500 active:scale-[0.99] shadow-md shadow-sky-600/25 transition duration-200 flex items-center justify-center gap-2"
           >
             <FaUserMd className="text-base" />
             <span>Connect to Patient Stream</span>
           </button>
         </form>
 
-        {/* Security & Regulatory footer */}
-        <div className="mt-6 pt-5 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400">
-          <div className="flex items-center gap-1.5">
-            <FaShieldAlt className="text-cyan-400" />
-            <span>HIPAA Compliant Encrypted Stream</span>
+        {/* Footer */}
+        <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+          <div className="flex items-center gap-1.5 text-slate-500">
+            <FaShieldAlt className="text-sky-600" />
+            <span>Encrypted Hospital Stream</span>
           </div>
-          <span className="text-slate-500 font-mono">v2.4 ICU-Core</span>
+          <span className="text-slate-400 font-mono">v2.4</span>
         </div>
 
       </div>
